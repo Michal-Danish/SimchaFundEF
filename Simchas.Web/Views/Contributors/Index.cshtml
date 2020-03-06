@@ -1,0 +1,136 @@
+﻿@using Simchas.Data;
+@model IEnumerable<Contributor>;
+
+
+<div class="container">
+    <h1>Contributors</h1>
+    <button id="newcontributor" class="btn btn-danger" style="margin-top: 5px">New Contributor</button>
+    <table class="table table-bordered table-striped" style="margin-top: 40px">
+        <tr>
+            <th style="text-align:center;vertical-align:middle;">Deposit</th>
+            <th style="text-align:center;vertical-align:middle;">Name</th>
+            <th style="text-align:center;vertical-align:middle;">Cell</th>
+            <th style="text-align:center;vertical-align:middle;">Balance</th>
+            <th style="text-align:center;vertical-align:middle;">Actions</th>
+        </tr>
+        @foreach (Contributor c in @Model)
+        {
+            <tr>
+                <td style="text-align:center;vertical-align:middle;"><button data-id="@c.Id" class="btn btn-success deposit">Deposit</button></td>
+                <td style="text-align:center;vertical-align:middle;@(c.Balance <= 0 ? "color:red;" : "")">@c.FirstName  @c.LastName</td>
+                <td style="text-align:center;vertical-align:middle;">@c.CellNumber</td>
+                <td style="text-align:center;vertical-align:middle;@(c.Balance <= 0 ? "color:red;" : "")">@c.Balance.ToString("C")</td>
+                <td style="text-align:center;vertical-align:middle;">
+                    <a href="/contributors/showhistory?id=@c.Id" class="btn btn-primary">Show History</a>
+                    <button data-id="@c.Id" data-first="@c.FirstName" data-last="@c.LastName" data-cell="@c.CellNumber" class="btn btn-danger edit">Edit</button>
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+
+<div id="contmodal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Contributor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/contributors/addcontributor">
+                    <label>First Name</label>
+                    <input type="text" placeholder="First Name" name="firstname" class="form-control" />
+                    <br />
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Last Name" name="lastname" class="form-control" />
+                    <br />
+                    <label>Cell Number</label>
+                    <input type="text" placeholder="Cell Number" name="cellnumber" class="form-control" />
+                    <br />
+                    <label>Date</label>
+                    <input type="date" name="date" class="form-control" />
+                    <br />
+                    <label>Initial Deposit</label>
+                    <input type="text" placeholder="Initial Deposit" name="amount" class="form-control" />
+                    <br />
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="editmodal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Contributor</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/contributors/editcontributor">
+                    <label>First Name</label>
+                    <input type="text" placeholder="First Name" name="firstname" id="firstName" class="form-control" />
+                    <br />
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Last Name" name="lastname" id="lastName" class="form-control" />
+                    <br />
+                    <label>Cell Number</label>
+                    <input type="text" placeholder="Cell Number" name="cellnumber" id="cellNumber" class="form-control" />
+                    <br />
+                    <input id="id" type="hidden" name="id" value="" />
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="depositmodal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Deposit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="/contributors/adddeposit">
+                    <label>Amount</label>
+                    <input type="text" placeholder="Deposit Amount" name="amount" class="form-control" />
+                    <br />
+                    <label>Date</label>
+                    <input type="date" name="date" class="form-control" />
+                    <br />
+                    <input id="contributorid" type="hidden" name="contributorid" value="" />
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script src="~/js/contributors.js"></script>
+}
+
+

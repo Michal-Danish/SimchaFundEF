@@ -1,0 +1,24 @@
+﻿@using Simchas.Data;
+@model HistoryViewModel;
+
+
+<div class="container">
+    <h1>History of @Model.Name</h1>
+    <h3>Current Balance: @Model.Balance.ToString("C")</h3>
+    <table class="table table-striped table-bordered" style="margin-top: 40px">
+        <tr>
+            <th style="text-align:center;vertical-align:middle;">Action</th>
+            <th style="text-align:center;vertical-align:middle;">Date</th>
+            <th style="text-align:center;vertical-align:middle;">Amount</th>
+        </tr>
+        @foreach (HistoryItem h in @Model.Actions)
+        {
+            <tr>
+                <td style="text-align:center;vertical-align:middle;">@h.ActionType</td>
+                <td style="text-align:center;vertical-align:middle;">@h.Date.ToShortDateString()</td>
+                <td style="text-align:center;vertical-align:middle;">@(h.ActionType == "Deposit" ? "+" + h.Amount.ToString("C") : "-" + h.Amount.ToString("C") )</td>
+            </tr>
+        }
+    </table>
+    <a href="/contributors/index" class="btn btn-danger" style="margin-top: 20px">Back to Contributors</a>
+</div>
